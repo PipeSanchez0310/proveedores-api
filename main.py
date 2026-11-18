@@ -13,13 +13,40 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-client = MongoClient(os.environ["MONGO_URI"])
-db = client["ISIS2304E08202620"]    
+#os.environ para despliegue. Descomente cuando ya probó todo local.
+#client = MongoClient(os.environ["MONGO_URI"])
+# TODO: conectarse al cluster Admonsis  
+client = MongoClient("mongodb://ISIS2304E09202620:fgG9NUizCcjd@157.253.236.88:8087")
+
+client = MongoClient("ISIS2304E09202620")
+# TODO: conectarse a la base de datos Admonsis  
+# db = client["ISIS*******"]
+db = client["ISIS2304E09202620"]
 
 
 @app.get("/")
 def inicio():
     return {"estado": "API funcionando correctamente"}
+
+@app.get('/bares/{bar_id}/comentarios')
+def get_comentarios(bar_id: int):
+    comentarios = None  # TODO: completar
+    return comentarios
+
+@app.post('/bares/{bar_id}/comentarios')
+def post_comentario(bar_id: int, datos: dict):
+    datos['bar_id'] = bar_id
+    datos['fecha']  = datetime.now().isoformat()
+    # TODO: completar
+    return {'mensaje': 'Comentario guardado'}
+
+# TODO: implementar GET /bares/{bar_id}/eventos
+# Debe retornar todos los eventos del bar desde la colección 'eventos'
+
+# TODO: implementar POST /bares/{bar_id}/eventos  
+# Debe insertar el evento en la colección 'eventos'
+# Recuerde agregar bar_id y fecha_creacion al documento antes de insertar
+
 
 #COMENTARIOS
 
